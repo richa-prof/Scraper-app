@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'httparty'
 
-class YCScraperService
+class Api::V1::YcScraperService
   BASE_URL = 'https://www.ycombinator.com/companies'
 
   def initialize(n, filters)
@@ -12,11 +12,9 @@ class YCScraperService
   def scrape_companies
     companies = []
     page = 1
-
     while companies.size < @n
       response = HTTParty.get("#{BASE_URL}?page=#{page}")
       parsed_page = Nokogiri::HTML(response.body)
-
       parsed_page.css('.company-card').each do |company_card|
         break if companies.size >= @n
 
